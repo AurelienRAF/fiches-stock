@@ -65,7 +65,7 @@ function ajoutsDe(b) {
 function mepDe(b) {
   const d = donnees(b), loc = mesDuMatch('mep', b).slice(-1)[0];
   if (loc && loc.t >= (d.mepT || 0)) return { q: loc.data.q, faite: true, par: { auteur: loc.auteur, h: hDe(loc.t) }, envoye: !!loc.recu };
-  return { q: d.mep, faite: d.mepFaite, par: d.mepPar, repris: d.mepRepris, envoye: true };
+  return { q: d.mep, faite: d.mepFaite, par: d.mepPar, repris: d.mepRepris, fiche: !!d.mepFiche, envoye: true };
 }
 function ficheDe(b) {
   const srv = donnees(b).fiche, loc = mesDuMatch('fiche', b).slice(-1)[0];
@@ -317,7 +317,8 @@ function scrMep() {
   h += `<h1 class="h1">${esc(buvette(b).nom)}</h1>`;
   if (V.horsLigne) h += `<div class="note warn">Pas de réseau : tout est gardé sur ton téléphone et partira dès que ça capte.</div>`;
   h += m.faite ? `<p class="muted">${m.par ? 'Enregistrée à ' + esc(m.par.h) + '. ' : ''}${m.envoye ? 'Envoyée.' : 'Gardée sur le téléphone, en attente d\'envoi.'} Tu peux encore la corriger.</p>`
-    : (m.repris ? `<div class="note gold">Repris de ${esc(m.repris)}. Corrige ce qui change, puis enregistre.</div>` : `<div class="note gold">Première mise en place de cette buvette : saisis tout, puis enregistre.</div>`);
+    : (m.fiche ? `<div class="note gold">Quantités de la fiche palette${m.repris ? ' (le reste repris de ' + esc(m.repris) + ')' : ''}. Corrige ce qui n'est pas sur la palette, puis enregistre.</div>`
+    : m.repris ? `<div class="note gold">Repris de ${esc(m.repris)}. Corrige ce qui change, puis enregistre.</div>` : `<div class="note gold">Première mise en place de cette buvette : saisis tout, puis enregistre.</div>`);
   groups(b).forEach(([g, l]) => {
     h += `<h2 class="h2">${esc(g)}</h2>` + l.map(p => `<div class="card"><div class="card-h"><div><div class="pn">${esc(P(p).d)}</div><div class="pu">${esc(P(p).u)}</div></div>${stepper({ act: 'mst', data: `data-p="${esc(p)}"`, val: br.q[p] || 0, inKey: 'mep', label: 'Mise en place, ' + P(p).d })}</div>${lotBtn('mpack', `data-p="${esc(p)}"`, p)}</div>`).join('');
   });

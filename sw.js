@@ -1,6 +1,6 @@
 // Réseau d'abord (pour recevoir les mises à jour), copie gardée en secours (pour marcher sans réseau).
 // Changer CACHE à chaque nouvelle version publiée.
-const CACHE = 'fiches-stock-1';
+const CACHE = 'fiches-stock-2';
 const FICHIERS = ['./', 'index.html', 'app.js', 'manifest.webmanifest', 'icone.svg', 'icone-180.png', 'icone-192.png', 'icone-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FICHIERS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {
